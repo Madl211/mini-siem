@@ -1,0 +1,53 @@
+rules:
+  - name: SSH Brute Force
+    type: threshold_count
+    event_type: ssh_login_failed
+    alert_type: SSH_BRUTE_FORCE
+    severity: HIGH
+    threshold: 10
+    window_seconds: 60
+    enabled: true
+
+  - name: Unusual Login Time
+    type: time_window
+    event_type: ssh_login_success
+    alert_type: UNUSUAL_LOGIN_TIME
+    severity: MEDIUM
+    start_hour: 0
+    end_hour: 5
+    enabled: true
+
+  - name: Excessive 404 Requests
+    type: threshold_count
+    event_type: http_404
+    alert_type: EXCESSIVE_404_REQUESTS
+    severity: MEDIUM
+    threshold: 20
+    window_seconds: 60
+    enabled: true
+
+  - name: Excessive 500 Errors
+    type: threshold_count
+    event_type: http_500
+    alert_type: EXCESSIVE_500_ERRORS
+    severity: HIGH
+    threshold: 10
+    window_seconds: 60
+    enabled: true
+
+  - name: Suspicious User Agent
+    type: immediate
+    event_type: suspicious_user_agent
+    alert_type: SUSPICIOUS_USER_AGENT
+    severity: MEDIUM
+    enabled: true
+
+  - name: Possible Port Scan
+    type: unique_count
+    event_type: http_request
+    alert_type: POSSIBLE_PORT_SCAN
+    severity: HIGH
+    threshold: 15
+    window_seconds: 60
+    unique_field: path
+    enabled: true
