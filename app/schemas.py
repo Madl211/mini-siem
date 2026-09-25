@@ -60,3 +60,8 @@ class StatsOut(BaseModel):
     unique_source_ips: int
     top_alert_types: list[dict[str, int | str]]
     events_last_24h: int
+
+
+class SampleLoadResult(BaseModel):
+    files: list[LogUploadResult]
+    alerts_created: int

@@ -197,5 +197,12 @@ document.getElementById("upload-form").addEventListener("submit", async (event) 
   document.getElementById("upload-result").textContent = JSON.stringify(result, null, 2);
 });
 
+// --- Beispieldaten laden ---
+document.getElementById("load-samples-btn").addEventListener("click", async () => {
+  const res = await fetch(`${API}/logs/load-samples`, { method: "POST" });
+  const result = await res.json();
+  document.getElementById("upload-result").textContent = JSON.stringify(result, null, 2);
+});
+
 // --- Initial call when the page loads ---
 loadDashboard();

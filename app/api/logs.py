@@ -1,3 +1,4 @@
+import os
 from typing import Literal
 
 from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile
@@ -9,7 +10,7 @@ from app.detection.rules import load_rules
 from app.models import Event
 from app.parsers.http_parser import parse_http_log
 from app.parsers.ssh_parser import ParsedEvent, parse_ssh_log
-from app.schemas import LogUploadResult
+from app.schemas import LogUploadResult, SampleLoadResult
 
 router = APIRouter(tags=["logs"])
 
@@ -96,3 +97,43 @@ async def upload_log(
 def analyze_logs(db: Session = Depends(get_db)) -> dict[str, int]:
     alerts_created = _run_detection(db)
     return {"alerts_created": alerts_created}
+
+
+SAMPLE_LOG_DIR = "sample_logs"
+SAMPLE_FILES: list[tuple[str, LogType]] = [
+    ("auth.log", "ssh"),
+    ("access.log", "http"),
+]
+
+
+@router.post("/logs/load-samples", response_model=SampleLoadResult)
+def load_sample_logs(db: Session = Depends(get_db)) -> SampleLoadResult:
+    """Laedt die mitgelieferten Beispiel-Logs aus sample_logs/, speichert sie und
+    laesst die Detection Engine einmal gemeinsam ueber alle neuen Events laufen."""
+    file_results: list[LogUploadResult] = []
+
+    for filename, log_type in SAMPLE_FILES:
+        path = os.path.join(SAMPLE_LOG_DIR, filename)
+        if not os.path.exists(path):
+            continue
+
+        with open(path, encoding="utf-8") as f:
+            text = f.read()
+
+        total_lines = len([line for line in text.splitlines() if line.strip()])
+        parsed_events, unknown, resolved_type = _parse(text, log_type)
+        _save_events(db, parsed_events)
+
+        file_results.append(
+            LogUploadResult(
+                filename=filename,
+                log_type=resolved_type,
+                total_lines=total_lines,
+                parsed_events=len(parsed_events),
+                unknown_lines=unknown,
+                alerts_created=0,
+            )
+        )
+
+    alerts_created = _run_detection(db)
+    return SampleLoadResult(files=file_results, alerts_created=alerts_created)

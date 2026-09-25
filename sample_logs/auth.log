@@ -1,0 +1,16 @@
+Jan 15 03:00:00 webserver sshd[10001]: Failed password for root from 198.51.100.9 port 50000 ssh2
+Jan 15 03:00:05 webserver sshd[10001]: Failed password for root from 198.51.100.9 port 50001 ssh2
+Jan 15 03:00:10 webserver sshd[10001]: Failed password for root from 198.51.100.9 port 50002 ssh2
+Jan 15 03:00:15 webserver sshd[10001]: Failed password for root from 198.51.100.9 port 50003 ssh2
+Jan 15 03:00:20 webserver sshd[10001]: Failed password for root from 198.51.100.9 port 50004 ssh2
+Jan 15 03:00:25 webserver sshd[10001]: Failed password for root from 198.51.100.9 port 50005 ssh2
+Jan 15 03:00:30 webserver sshd[10001]: Failed password for root from 198.51.100.9 port 50006 ssh2
+Jan 15 03:00:35 webserver sshd[10001]: Failed password for root from 198.51.100.9 port 50007 ssh2
+Jan 15 03:00:40 webserver sshd[10001]: Failed password for root from 198.51.100.9 port 50008 ssh2
+Jan 15 03:00:45 webserver sshd[10001]: Failed password for root from 198.51.100.9 port 50009 ssh2
+Jan 15 03:00:50 webserver sshd[10001]: Failed password for root from 198.51.100.9 port 50010 ssh2
+Jan 15 02:30:00 webserver sshd[10002]: Accepted password for deploy from 10.0.0.5 port 51000 ssh2
+Jan 15 09:15:00 webserver sshd[10003]: Accepted password for alice from 203.0.113.15 port 52000 ssh2
+Jan 15 09:16:00 webserver sshd[10003]: pam_unix(sudo:session): session opened for user root by alice(uid=1000)
+Jan 15 09:20:00 webserver sshd[10004]: Invalid user test123 from 192.0.2.55
+this line is not a valid log entry and should be ignored
