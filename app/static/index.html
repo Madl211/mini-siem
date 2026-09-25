@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mini-SIEM</title>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <header>
+    <h1>Mini-SIEM</h1>
+    <nav>
+      <button class="tab-btn active" data-tab="dashboard">Dashboard</button>
+      <button class="tab-btn" data-tab="alerts">Alerts</button>
+      <button class="tab-btn" data-tab="events">Events</button>
+      <button class="tab-btn" data-tab="timeline">Timeline</button>
+      <button class="tab-btn" data-tab="upload">Log-Upload &amp; Export</button>
+    </nav>
+  </header>
+
+  <main>
+    <section id="tab-dashboard" class="tab-panel active">
+      <h2>Dashboard</h2>
+      <div class="stat-cards">
+        <div class="card"><span class="card-value" id="stat-total-events">-</span><span class="card-label">Events gesamt</span></div>
+        <div class="card"><span class="card-value" id="stat-open-alerts">-</span><span class="card-label">Offene Alerts</span></div>
+        <div class="card"><span class="card-value" id="stat-critical-alerts">-</span><span class="card-label">Kritische Alerts</span></div>
+        <div class="card"><span class="card-value" id="stat-unique-ips">-</span><span class="card-label">Quell-IPs</span></div>
+        <div class="card"><span class="card-value" id="stat-events-24h">-</span><span class="card-label">Events (24h)</span></div>
+      </div>
+      <h3>Häufigste Alert-Typen</h3>
+      <ul id="top-alert-types"></ul>
+    </section>
+
+    <section id="tab-alerts" class="tab-panel">
+      <h2>Alerts</h2>
+      <div class="filters">
+        <select id="filter-severity">
+          <option value="">Alle Severities</option>
+          <option value="LOW">LOW</option>
+          <option value="MEDIUM">MEDIUM</option>
+          <option value="HIGH">HIGH</option>
+          <option value="CRITICAL">CRITICAL</option>
+        </select>
+        <select id="filter-status">
+          <option value="">Alle Status</option>
+          <option value="OPEN">OPEN</option>
+          <option value="ACKNOWLEDGED">ACKNOWLEDGED</option>
+          <option value="RESOLVED">RESOLVED</option>
+        </select>
+        <input type="text" id="filter-alert-ip" placeholder="Quell-IP" />
+        <input type="datetime-local" id="filter-alert-since" />
+        <input type="datetime-local" id="filter-alert-until" />
+        <button id="btn-filter-alerts">Filtern</button>
+      </div>
+      <table id="alerts-table">
+        <thead>
+          <tr><th>Severity</th><th>Alert-Typ</th><th>Titel</th><th>Quell-IP</th><th>Zeitpunkt</th><th>Status</th><th>Aktionen</th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </section>
+
+    <section id="tab-events" class="tab-panel">
+      <h2>Events</h2>
+      <div class="filters">
+        <input type="text" id="filter-event-ip" placeholder="Quell-IP" />
+        <input type="text" id="filter-event-type" placeholder="Event-Typ" />
+        <input type="text" id="filter-event-user" placeholder="Benutzername" />
+        <input type="text" id="filter-event-path" placeholder="Pfad" />
+        <input type="datetime-local" id="filter-event-since" />
+        <input type="datetime-local" id="filter-event-until" />
+        <button id="btn-filter-events">Filtern</button>
+      </div>
+      <table id="events-table">
+        <thead>
+          <tr><th>Zeitpunkt</th><th>Typ</th><th>Quell-IP</th><th>User</th><th>Pfad</th><th>Status</th><th>Severity</th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </section>
+
+    <section id="tab-timeline" class="tab-panel">
+      <h2>Timeline</h2>
+      <div id="timeline"></div>
+    </section>
+
+    <section id="tab-upload" class="tab-panel">
+      <h2>Log-Upload</h2>
+      <form id="upload-form">
+        <input type="file" id="upload-file" required />
+        <label><input type="radio" name="log_type" value="auto" checked /> Automatische Erkennung</label>
+        <label><input type="radio" name="log_type" value="ssh" /> SSH-Log</label>
+        <label><input type="radio" name="log_type" value="http" /> HTTP-Access-Log</label>
+        <button type="submit">Hochladen &amp; Analysieren</button>
+      </form>
+      <div id="upload-result"></div>
+
+      <h3>Export</h3>
+      <div class="export-buttons">
+        <button id="export-alerts-json">Alerts als JSON</button>
+        <button id="export-alerts-csv">Alerts als CSV</button>
+        <button id="export-events-json">Events als JSON</button>
+        <button id="export-events-csv">Events als CSV</button>
+      </div>
+    </section>
+  </main>
+
+  <div id="alert-detail-modal" class="modal hidden">
+    <div class="modal-content">
+      <button id="modal-close">&times;</button>
+      <div id="modal-body"></div>
+    </div>
+  </div>
+
+  <script src="/app.js"></script>
+</body>
+</html>
