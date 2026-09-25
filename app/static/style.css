@@ -133,6 +133,10 @@ tr.severity-row-HIGH, tr.severity-row-CRITICAL {
   justify-content: center;
 }
 
+.modal.hidden {
+  display: none;
+}
+
 .modal-content {
   background: white;
   padding: 1.5rem;
