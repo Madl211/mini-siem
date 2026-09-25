@@ -78,6 +78,7 @@ class Alert(Base):
     )
 
 
+# Many to many alerts and events relationship
 class AlertEvent(Base):
 
     __tablename__ = "alert_events"

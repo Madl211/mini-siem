@@ -13,10 +13,6 @@ class Base(DeclarativeBase):
     pass
 
 
-def Base(DeclarativeBase):
-    pass
-
-
 # fastAPI-Dependency-Pattern
 def get_db() -> Generator:
     db = SessionLocal()
