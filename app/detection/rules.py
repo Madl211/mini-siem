@@ -10,9 +10,9 @@ from app.models import Rule as RuleModel
 RuleType = Literal["threshold_count", "unique_count", "time_window", "immediate"]
 
 
+# detection rule from config.yaml
 @dataclass
 class Rule:
-    """Eine geladene Detection-Regel (aus config.yaml). Rein-Python, keine DB-Abhaengigkeit."""
 
     name: str
     type: RuleType
@@ -27,8 +27,9 @@ class Rule:
     unique_field: str = "path"
 
 
+# load detection rules from a yaml file; unknown or invalid entries are skipped
 def load_rules(path: str) -> list[Rule]:
-    """Laedt Regeln aus einer YAML-Datei. Unbekannte/fehlerhafte Eintraege werden uebersprungen, nicht die ganze Anwendung zum Absturz gebracht."""
+    
     with open(path, encoding="utf-8") as f:
         data = yaml.safe_load(f) or {}
 
@@ -51,13 +52,13 @@ def load_rules(path: str) -> list[Rule]:
                 )
             )
         except KeyError:
-            # Pflichtfeld fehlt - diese Regel ignorieren statt die App abstuerzen zu lassen
             continue
     return rules
 
 
+# synchronize loaded rules to the database
 def sync_rules_to_db(db: Session, rules: list[Rule]) -> None:
-    """Spiegelt die geladenen Regeln in die 'rules'-Tabelle, damit sie dort einsehbar sind."""
+
     for rule in rules:
         existing = db.execute(
             select(RuleModel).where(RuleModel.name == rule.name)
