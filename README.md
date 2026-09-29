@@ -147,3 +147,11 @@ I want to be upfront about the stuff that's simplified/not perfect here:
 - The auto-detection for log type is a one-line heuristic (checks for `" - - ["` in the
   first line). Works for the two formats supported here, would need to be smarter to
   support more log formats.
+
+## A note on the git history
+
+I originally wrote this project on a different machine without a git repository set
+up, so the actual development happened without version control. Once it was in a
+working state I copied it over to this machine and pushed it here, which is why the
+commit history is short and doesn't reflect the full step-by-step process of building
+it.
